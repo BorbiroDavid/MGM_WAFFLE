@@ -30,6 +30,9 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': [],
+        'console_scripts': [
+        'pillar_det_node = mgm_waffle.pillar_det_node:main',
+        'gate_finder = mgm_waffle.gate_finder:main',
+    ],
     },
 )
