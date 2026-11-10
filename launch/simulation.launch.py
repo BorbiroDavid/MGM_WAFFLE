@@ -10,7 +10,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import AppendEnvironmentVariable, DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import AppendEnvironmentVariable, DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
@@ -162,7 +162,9 @@ def generate_launch_description():
         condition=IfCondition(use_rviz)
     )
 
-    # Erőforrás útvonalak beállítása (TB3 modellek és saját modellek elérhetősége)
+    # Környezeti változók: modell és erőforrás útvonalak
+    set_tb3_model = SetEnvironmentVariable('TURTLEBOT3_MODEL', 'waffle')
+
     set_env_vars_resources = AppendEnvironmentVariable(
         'GZ_SIM_RESOURCE_PATH',
         os.path.join(pkg_tb3_gazebo, 'models')
@@ -185,6 +187,7 @@ def generate_launch_description():
     ld.add_action(declare_rviz_config_cmd)
 
     # Műveletek
+    ld.add_action(set_tb3_model)
     ld.add_action(set_env_vars_resources)
     ld.add_action(set_env_vars_local)
     ld.add_action(gzserver_cmd)
