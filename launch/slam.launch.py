@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-#
-# MGM_WAFFLE - SLAM Toolbox online aszinkron indítófájl
-# Meghívja a hivatalos online_async_launch.py-t a paraméterfájlunkkal.
-#
-
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -22,18 +17,12 @@ def generate_launch_description():
     slam_params_file = LaunchConfiguration('slam_params_file', default=default_params_file)
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        'use_sim_time',
-        default_value='true',
-        description='Use simulation clock'
+        'use_sim_time', default_value='true', description='Use simulation clock'
     )
-
     declare_params_file_cmd = DeclareLaunchArgument(
-        'slam_params_file',
-        default_value=default_params_file,
-        description='Full path to the slam_toolbox configuration YAML'
+        'slam_params_file', default_value=default_params_file, description='SLAM params file'
     )
 
-    # A slam_toolbox hivatalos online_async_launch.py indítása
     slam_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_slam_toolbox, 'launch', 'online_async_launch.py')

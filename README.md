@@ -2,10 +2,10 @@
 
 ### A külső függőségek automatikus telepítéséhez futtasd az `install_dependencies.sh` az albbi parancsokkal Terminátorban:
 
-
+```bash
 cd ~/ros2_ws/src/MGM_WAFFLE
 install_dependencies.sh
-
+```
 
 A script elvégzi az alábbiakat:
 1. Telepíti a szükséges `apt` csomagokat 
@@ -16,16 +16,29 @@ A script elvégzi az alábbiakat:
 
 ### Miután a telepítés lefutott, a workspace gyökeréből fordítsd le a csomagokat:
 
+```bash
 cd ~/Desktop/ros2_ws
 colcon build --symlink-install
 source install/setup.bash
+```
+
+### FONTOS: Ha már futtatad egyszer a teljes buildet, de újra akarsz buildelni, akkor célszerű az alábbi verziót használni!
+
+```bash
+colcon build --symlink-install --packages-select mgm_waffle
+```
 
 ## 3. Projekt futtatása
 
 ### A main.launch.py futtatja mindkét alábbrendelt launch fájlt, melyek külön felelősek a SLAM és a szimuláció elindításáért
 
+```bash
 ros2 launch mgm_waffle main.launch.py
+```
+
 
 ### Emellett, ha szeretnéd manuálisan mozgatni a robotot, akkor egy másik terminálban az alábbi sor futattásával megteheted:
 
+```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p stamped:=true
+```

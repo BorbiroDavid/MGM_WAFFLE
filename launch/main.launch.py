@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-#
-# MGM_WAFFLE - Fő integrált indítófájl (main.launch.py)
-# Összefogja a moduláris részeket:
-# 1. Szimuláció (Gazebo headless + Waffle robot + Bridge-ek + RViz) statikus TF NÉLKÜL
-# 2. SLAM Toolbox (Élő térképezés + Dinamikus map->odom TF)
-#
-
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -25,36 +18,21 @@ def generate_launch_description():
     y_pose = LaunchConfiguration('y_pose', default='-0.5')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
-        'use_sim_time',
-        default_value='true',
-        description='Use simulation clock'
+        'use_sim_time', default_value='true', description='Use simulation clock'
     )
-
     declare_use_gz_client_cmd = DeclareLaunchArgument(
-        'use_gz_client',
-        default_value='false',
-        description='Launch Gazebo UI client'
+        'use_gz_client', default_value='false', description='Start Gazebo UI client'
     )
-
     declare_use_rviz_cmd = DeclareLaunchArgument(
-        'use_rviz',
-        default_value='true',
-        description='Launch RViz2 interface'
+        'use_rviz', default_value='true', description='Start RViz2'
     )
-
     declare_x_pose_cmd = DeclareLaunchArgument(
-        'x_pose',
-        default_value='-2.0',
-        description='Initial robot X pose'
+        'x_pose', default_value='-2.0', description='Initial robot X pose'
     )
-
     declare_y_pose_cmd = DeclareLaunchArgument(
-        'y_pose',
-        default_value='-0.5',
-        description='Initial robot Y pose'
+        'y_pose', default_value='-0.5', description='Initial robot Y pose'
     )
 
-    # 1. Szimuláció indítása: publish_dummy_tf kötelezően 'false', mert a SLAM adja a dinamikus TF-et!
     simulation_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_mgm_waffle, 'launch', 'simulation.launch.py')
@@ -63,20 +41,16 @@ def generate_launch_description():
             'use_sim_time': use_sim_time,
             'use_gz_client': use_gz_client,
             'use_rviz': use_rviz,
-            'publish_dummy_tf': 'false',
             'x_pose': x_pose,
             'y_pose': y_pose
         }.items()
     )
 
-    # 2. SLAM Toolbox indítása
     slam_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_mgm_waffle, 'launch', 'slam.launch.py')
         ),
-        launch_arguments={
-            'use_sim_time': use_sim_time
-        }.items()
+        launch_arguments={'use_sim_time': use_sim_time}.items()
     )
 
     ld = LaunchDescription()
