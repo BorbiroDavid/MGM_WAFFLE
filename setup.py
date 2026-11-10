@@ -15,6 +15,7 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob('launch/*launch*')),
         (os.path.join('share', package_name, 'params'), glob('params/*')),
         (os.path.join('share', package_name, 'rviz'), glob('rviz/*')),
+        (os.path.join('share', package_name, 'models'), glob('models/*')),
         (os.path.join('share', package_name, 'world'), glob('world/*')),
     ],
     install_requires=['setuptools'],
